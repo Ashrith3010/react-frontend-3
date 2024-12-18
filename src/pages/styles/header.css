@@ -1,0 +1,281 @@
+/* General styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.header-container {
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4a5568;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #f0f9ff;
+  color: #3182ce;
+}
+
+.nav-link.active {
+  background-color: #e0f2fe;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.nav-link svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover svg {
+  transform: translateY(-2px);
+}
+
+/* User profile section */
+.user-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Adjust dropdown position to the left */
+.dropdown-menu {
+  position: absolute;
+  left: -200px;  /* Move it to the left */
+  top: 60px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 2000;
+  animation: dropdown-slide-down 0.3s ease;
+}
+
+/* Ensure profile initials are still centered */
+.dropdown-profile-initial {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+  background-color: #292827;
+  font-size: 30px;
+ 
+}
+
+.profile-initial {
+  background-color: #02850d;
+  font-size: 24px;
+  margin-right: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+@keyframes dropdown-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-info {
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background-color: #f7f9fc;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 4px;
+}
+
+.user-email {
+  font-size: 13px;
+  color: #7f8c8d;
+  margin-bottom: 4px;
+}
+
+.user-type {
+  font-size: 12px;
+  color: #ac2424;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 8px 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f7fafc;
+}
+
+.logout {
+  color: #e11d48;
+}
+
+.logout:hover {
+  background-color: #fecdd3;
+  color: #e11d48;
+}
+
+.logout svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.logout:hover svg {
+  transform: rotate(90deg);
+}
+
+/* Error Banner */
+.error-banner {
+  background-color: #fee2e2;
+  color: #7f1d1d;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+}
+
+/* Mobile and tablet responsiveness */
+@media (max-width: 1200px) {
+  .nav-links {
+    gap: 16px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-container {
+    padding: 0 16px;
+  }
+
+  .nav-links {
+    gap: 12px;
+  }
+
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0 12px;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-link {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .dropdown-menu {
+    width: 180px;
+  }
+}

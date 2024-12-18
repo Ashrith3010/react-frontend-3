@@ -1,0 +1,61 @@
+/* Account Settings Layout */
+.account-settings-container {
+    display: flex;
+    max-width: 900px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar ul li:hover,
+  .sidebar ul li.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .settings-item {
+    margin-bottom: 20px;
+  }
+  
+  .settings-item label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .success {
+    color: green;
+    margin-top: 10px;
+  }
+  
