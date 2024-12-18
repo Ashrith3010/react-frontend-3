@@ -5,7 +5,7 @@ import AvailableFood from './FoodAvailability';
 import NGODirectory from './NGODirectory';
 import Contact from './Contact';
 import Header from './Header';
-import '../styles/dashboard.css';
+import styles from '../styles/dashboard.module.css'; // Import the CSS module
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -53,24 +53,24 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className={styles.dashboard}>
       <Header userType={userType} />
-      
-      <main>
+
+      <main className={styles.main}>
         <Routes>
           <Route path="/" element={
             <div>
-              <section>
+              <section className={styles.welcomeSection}>
                 <h1>Welcome to Food Donation Network</h1>
                 <p>Connecting generous donors with NGOs to reduce food waste and feed those in need.</p>
               </section>
 
-              {error && <div className="error">{error}</div>}
+              {error && <div className={styles.error}>{error}</div>}
 
-              <div className="stats">
+              <div className={styles.stats}>
                 {loading ? (
                   Array(4).fill(0).map((_, index) => (
-                    <div key={index} className="loading"></div>
+                    <div key={index} className={styles.loading}></div>
                   ))
                 ) : (
                   <>
@@ -94,7 +94,7 @@ const Dashboard = () => {
                 )}
               </div>
 
-              <div className="services">
+              <div className={styles.services}>
                 <div>
                   <h2>For Donors</h2>
                   <ul>
