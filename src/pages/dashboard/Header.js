@@ -43,13 +43,14 @@ const Header = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  const API_BASE_URL = 'http://localhost:8080'; // Changed from 3001 to 8080
+
 
   // Fetch user profile on component mount
   useEffect(() => {
     const fetchUserProfile = async () => {
       const token = localStorage.getItem('token');
       
-      // If no token, stop loading and don't fetch
       if (!token) {
         setLoading(false);
         return;
@@ -57,27 +58,39 @@ const Header = () => {
 
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:3001/api/account/profile', {
+        console.log('Fetching profile with token:', token); // Debug log
+
+        const response = await axios.get(`${API_BASE_URL}/api/account/profile`, {
           headers: { 
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
           },
         });
 
-        // Ensure profile data exists
-        if (response.data && response.data.profile) {
-          setUserProfile(response.data.profile);
+        console.log('Profile response:', response.data); // Debug log
+
+        // Updated to match the backend response structure
+        if (response.data && response.data.data) {
+          setUserProfile(response.data.data);
           setError(null);
         } else {
-          throw new Error('Invalid profile data');
+          throw new Error('Invalid profile data structure');
         }
       } catch (error) {
-        console.error('Error fetching profile:', error);
-        setError('Failed to fetch profile');
+        console.error('Error details:', {
+          message: error.message,
+          response: error.response,
+          status: error.response?.status
+        });
 
-        // If unauthorized, logout the user
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        if (error.message === 'Network Error') {
+          setError('Cannot connect to server. Please check if the backend is running.');
+        } else if (error.response?.status === 403) {
+          setError('Session expired. Please log in again.');
           handleLogout();
+        } else {
+          setError('Failed to fetch profile: ' + error.message);
         }
       } finally {
         setLoading(false);
