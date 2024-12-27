@@ -35,18 +35,18 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Get the authentication token from localStorage
     const token = localStorage.getItem('token');
     console.log('Token:', token);
-
+  
     if (!token) {
       setStatus('Please log in to send a message.');
       return;
     }
-
+  
     try {
-      const response = await fetch('http://localhost:3001/api/contact', {
+      const response = await fetch('http://localhost:8080/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,22 +54,31 @@ const Contact = () => {
         },
         body: JSON.stringify(formData),
       });
-
-      const data = await response.json();
+  
+      // Check if the response is empty
+      if (response.status === 204) {
+        setStatus('No content returned from the server.');
+        return;
+      }
+  
+      // Get the raw response text
+      const text = await response.text();
+  
       if (response.ok) {
-        setStatus('Message sent successfully!');
+        setStatus(text || 'Message sent successfully!');
         setFormData(prevData => ({
           ...prevData,
-          message: '' // Keep name and email, clear only message
+          message: '', // Keep name and email, clear only message
         }));
       } else {
-        throw new Error(data.message || 'Failed to send message');
+        setStatus(`Failed to send message: ${text || 'Unknown error'}`);
       }
     } catch (error) {
       setStatus(`Failed to send message: ${error.message}`);
       console.error('Submit error:', error);
     }
   };
+  
 
   const handleChange = (e) => {
     setFormData({

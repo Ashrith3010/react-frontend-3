@@ -5,7 +5,7 @@ import AvailableFood from './FoodAvailability';
 import NGODirectory from './NGODirectory';
 import Contact from './Contact';
 import Header from './Header';
-import styles from '../styles/dashboard.module.css'; // Import the CSS module
+import styles from '../styles/dashboard.module.css';
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -14,26 +14,24 @@ const Dashboard = () => {
   const userType = localStorage.getItem('userType');
   const token = localStorage.getItem('token');
 
+  const API_BASE_URL = 'http://localhost:8080/api/stats';
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/stats', {
+        const response = await fetch(`${API_BASE_URL}`, {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch statistics');
+          throw new Error(`Failed to fetch stats: ${response.statusText}`);
         }
 
-        const data = await response.json();
-        setStats({
-          donors: data.totalDonors,
-          ngos: data.totalNGOs,
-          donations: data.totalDonations,
-          active: data.activeDonations
-        });
+        const statsData = await response.json();
+        setStats(statsData);
         setError(null);
       } catch (err) {
         setError('Failed to load dashboard statistics');
@@ -43,9 +41,11 @@ const Dashboard = () => {
       }
     };
 
-    fetchStats();
-    const intervalId = setInterval(fetchStats, 300000);
-    return () => clearInterval(intervalId);
+    if (token) {
+      fetchStats();
+      const intervalId = setInterval(fetchStats, 300000);
+      return () => clearInterval(intervalId);
+    }
   }, [token]);
 
   if (!token) {
@@ -75,49 +75,48 @@ const Dashboard = () => {
                 ) : (
                   <>
                     <div>
-                      <p>{stats?.donors || 0}</p>
+                      <p>{stats?.totalDonors || 0}</p>
                       <p>Active Donors</p>
                     </div>
                     <div>
-                      <p>{stats?.ngos || 0}</p>
+                      <p>{stats?.totalNGOs || 0}</p>
                       <p>NGO Partners</p>
                     </div>
                     <div>
-                      <p>{stats?.donations || 0}</p>
+                      <p>{stats?.totalDonations || 0}</p>
                       <p>Total Donations</p>
                     </div>
                     <div>
-                      <p>{stats?.active || 0}</p>
+                      <p>{stats?.activeDonations || 0}</p>
                       <p>Active Donations</p>
                     </div>
                   </>
                 )}
               </div>
-
               <div className={styles.services}>
-                <div>
-                  <h2>For Donors</h2>
-                  <ul>
-                    <li>Easy-to-use donation platform</li>
-                    <li>Real-time tracking of donations</li>
-                    <li>Direct connection with local NGOs</li>
-                    <li>Impact tracking and reporting</li>
-                  </ul>
-                </div>
+                  <div>
+                    <h2>For Donors</h2>
+                    <ul>
+                      <li>Easy-to-use donation platform</li>
+                      <li>Real-time tracking of donations</li>
+                      <li>Direct connection with local NGOs</li>
+                      <li>Impact tracking and reporting</li>
+                    </ul>
+                  </div>
 
-                <div>
-                  <h2>For NGOs</h2>
-                  <ul>
-                    <li>Real-time food availability updates</li>
-                    <li>Efficient claim and pickup system</li>
-                    <li>Donor communication platform</li>
-                    <li>Distribution management tools</li>
-                  </ul>
+                  <div>
+                    <h2>For NGOs</h2>
+                    <ul>
+                      <li>Real-time food availability updates</li>
+                      <li>Efficient claim and pickup system</li>
+                      <li>Donor communication platform</li>
+                      <li>Distribution management tools</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          } />
-
+          }
+          />
           {userType === 'donor' && (
             <Route path="/donate" element={<DonationManager />} />
           )}

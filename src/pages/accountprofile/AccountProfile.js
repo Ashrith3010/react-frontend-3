@@ -41,7 +41,7 @@ export const AccountProfile = () => {
   const handleProfileUpdate = () => {
     const token = localStorage.getItem('token');
     axios
-      .put('http://localhost:3001/api/account/profile', profile, {
+      .put('http://localhost:8080/api/account/profile', profile, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

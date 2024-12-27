@@ -24,7 +24,7 @@ export const ChangePassword = () => {
     const token = localStorage.getItem('token');
     axios
       .post(
-        'http://localhost:3001/api/account/change-password',
+        'http://localhost:8080/api/account/change-password',
         {
           currentPassword: passwords.currentPassword,
           newPassword: passwords.newPassword

@@ -40,7 +40,7 @@ const AvailableFood = () => {
         ...(selectedCity && { city: selectedCity })
       });
 
-      const response = await fetch(`http://localhost:3001/api/donations?${queryParams}`, {
+      const response = await fetch(`http://localhost:8080/api/donations?${queryParams}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

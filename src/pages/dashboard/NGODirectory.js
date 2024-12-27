@@ -14,7 +14,7 @@ const NGODirectory = () => {
         if (!token) {
           throw new Error('Please login to view the NGO directory');
         }
-        const response = await fetch('http://localhost:3001/api/ngos', {
+        const response = await fetch('http://localhost:8080/api/ngos', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

@@ -5,7 +5,7 @@ import '../styles/login.css';
 const Login = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        identifier: '',
+        username: '',  // Changed from identifier to username
         password: ''
     });
     const [message, setMessage] = useState('');
@@ -27,12 +27,15 @@ const Login = () => {
         setMessage('');
 
         try {
-            const response = await fetch('http://localhost:3001/login', {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    username: formData.username,  // Ensure we send username
+                    password: formData.password
+                }),
             });
 
             const data = await response.json();
@@ -62,8 +65,8 @@ const Login = () => {
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
-                        name="identifier"
-                        value={formData.identifier}
+                        name="username"  // Changed from identifier to username
+                        value={formData.username}  // Changed from identifier to username
                         onChange={handleChange}
                         placeholder="Username / Email / Phone"
                         required

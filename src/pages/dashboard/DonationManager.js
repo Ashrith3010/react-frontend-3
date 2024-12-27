@@ -52,7 +52,7 @@ const DonationManager = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/donations', {
+      const response = await fetch('http://localhost:8080/api/donations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
