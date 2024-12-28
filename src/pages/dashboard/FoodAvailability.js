@@ -19,7 +19,7 @@ const AvailableFood = () => {
     'Lucknow': ['Lucknow'],
     'Jaipur': ['Jaipur'],
     'Bhopal': ['Bhopal'],
-    'Chandigarh': ['Chandigarh']
+    'Chandigarh': ['Chandigarh'],
   };
 
   useEffect(() => {
@@ -37,14 +37,14 @@ const AvailableFood = () => {
       const queryParams = new URLSearchParams({
         view: 'available',
         status: 'active',
-        ...(selectedCity && { city: selectedCity })
+        ...(selectedCity && { city: selectedCity }),
       });
 
       const response = await fetch(`http://localhost:8080/api/donations?${queryParams}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
       if (!response.ok) {
@@ -53,11 +53,7 @@ const AvailableFood = () => {
       }
 
       const data = await response.json();
-      const availableDonations = data.donations.filter(donation =>
-        !donation.claimed && new Date(donation.expiryTime) > new Date()
-      );
-
-      setDonations(availableDonations);
+      setDonations(data.donations || []);
       setError(null);
     } catch (err) {
       setError(err.message);
@@ -71,12 +67,12 @@ const AvailableFood = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('Please login to claim donations');
 
-      const response = await fetch(`http://localhost:3001/api/donations/${donationId}/claim`, {
+      const response = await fetch(`http://localhost:8080/api/donations/${donationId}/claim`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
       if (!response.ok) {
@@ -84,21 +80,23 @@ const AvailableFood = () => {
         throw new Error(errorData.message || 'Failed to claim donation');
       }
 
-      const updatedDonation = await response.json();
+      const { updatedDonation } = await response.json();
 
-      // Update the donations list by removing the claimed donation
-      setDonations(prevDonations =>
-        prevDonations.filter(donation => donation.id !== donationId)
+      // Update the donations list to mark the claimed donation
+      setDonations((prevDonations) =>
+        prevDonations.map((donation) =>
+          donation.id === donationId ? { ...donation, claimed: true } : donation
+        )
       );
 
       setNotification({
         type: 'success',
-        message: 'Donation claimed successfully! Email notification has been sent to the donor.'
+        message: 'Donation claimed successfully! Email notification has been sent to the donor.',
       });
     } catch (err) {
       setNotification({
         type: 'error',
-        message: err.message
+        message: err.message,
       });
     }
 
@@ -110,7 +108,7 @@ const AvailableFood = () => {
     const expiry = new Date(expiryTime);
     return new Intl.DateTimeFormat('en-IN', {
       dateStyle: 'medium',
-      timeStyle: 'short'
+      timeStyle: 'short',
     }).format(expiry);
   };
 
@@ -137,7 +135,7 @@ const AvailableFood = () => {
       <Header />
       <div className="food-header">
         <h2 className="food-title">Available Food Donations</h2>
-       
+
         <div className="filters">
           <select
             value={selectedCity}
@@ -145,43 +143,48 @@ const AvailableFood = () => {
             className="city-filter"
           >
             <option value="">All Cities</option>
-            {Object.keys(INDIAN_CAPITAL_CITIES).map(city => (
-              <option key={city} value={city}>{city}</option>
+            {Object.keys(INDIAN_CAPITAL_CITIES).map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
       {notification && (
-        <div className={`notification ${notification.type === 'error' ? 'notification-error' : 'notification-success'}`}>
+        <div
+          className={`notification ${
+            notification.type === 'error' ? 'notification-error' : 'notification-success'
+          }`}
+        >
           {notification.message}
         </div>
       )}
 
       {donations.length === 0 ? (
-        <div className="empty-message">
-          No food donations available at the moment.
-        </div>
+        <div className="empty-message">No food donations available at the moment.</div>
       ) : (
         <div className="food-grid">
           {donations.map((donation) => (
             <div key={donation.id} className="food-card">
               <h3 className="food-card-title">{donation.foodItem}</h3>
               <div className="food-card-info">
-                <p><span className="food-card-label">Posted by:</span> {donation.donorName}</p>
-                <p><span className="food-card-label">Location:</span> {donation.location}</p>
-                <p><span className="food-card-label">Area:</span> {donation.area}</p>
-                <p><span className="food-card-label">Quantity:</span> {donation.quantity}</p>
-                <p><span className="food-card-label">Best before:</span> {formatExpiryTime(donation.expiryTime)}</p>
-                {donation.servingSize && (
-                  <p><span className="food-card-label">Serving size:</span> {donation.servingSize}</p>
-                )}
-                {donation.dietaryInfo && (
-                  <p><span className="food-card-label">Dietary Info:</span> {donation.dietaryInfo}</p>
-                )}
-                {donation.storageInstructions && (
-                  <p><span className="food-card-label">Storage:</span> {donation.storageInstructions}</p>
-                )}
+                <p>
+                  <span className="food-card-label">Posted by:</span> {donation.donorName}
+                </p>
+                <p>
+                  <span className="food-card-label">Location:</span> {donation.location}
+                </p>
+                <p>
+                  <span className="food-card-label">Area:</span> {donation.area}
+                </p>
+                <p>
+                  <span className="food-card-label">Quantity:</span> {donation.quantity}
+                </p>
+                <p>
+                  <span className="food-card-label">Best before:</span> {formatExpiryTime(donation.expiryTime)}
+                </p>
               </div>
 
               {userType === 'ngo' && (
