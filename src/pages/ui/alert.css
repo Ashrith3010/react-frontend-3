@@ -1,0 +1,23 @@
+/* src/components/ui/alert.css */
+
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .alert-info {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+  }
+  
+  .alert-destructive {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .alert-description {
+    margin-top: 10px;
+  }
+  

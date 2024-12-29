@@ -1,0 +1,16 @@
+/* src/components/ui/progress.css */
+
+.progress {
+    background-color: #f0f0f0;
+    border-radius: 25px;
+    height: 8px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .progress-bar {
+    background-color: #4caf50;
+    height: 100%;
+    border-radius: 25px;
+  }
+  
