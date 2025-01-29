@@ -1,23 +1,90 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { Shield, Lock, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../styles/account settings/ChangePassword.css';
 import Header from '../dashboard/Header';
 
-export const ChangePassword = () => {
+const PasswordStrengthIndicator = ({ password }) => {
+  const getStrength = (pass) => {
+    let strength = 0;
+    if (pass.length >= 8) strength++;
+    if (/[A-Z]/.test(pass)) strength++;
+    if (/[0-9]/.test(pass)) strength++;
+    if (/[!@#$%^&*]/.test(pass)) strength++;
+    return strength;
+  };
+
+  const strength = getStrength(password);
+  const strengthText = {
+    0: 'Too weak',
+    1: 'Weak',
+    2: 'Fair',
+    3: 'Good',
+    4: 'Strong'
+  };
+
+  return (
+    <div className="strength-indicator">
+      <div className="strength-bars">
+        {[...Array(4)].map((_, index) => (
+          <div
+            key={index}
+            className={`strength-bar ${index < strength ? `level-${strength}` : ''}`}
+          />
+        ))}
+      </div>
+      <p className={`strength-text ${strength > 2 ? 'strong' : ''}`}>
+        {strengthText[strength]}
+      </p>
+    </div>
+  );
+};
+
+const PasswordInput = ({ value, onChange, placeholder, icon: Icon }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className={`password-input-container ${isFocused ? 'focused' : ''}`}>
+      <div className="input-icon left">
+        <Icon size={20} />
+      </div>
+      <input
+        type={showPassword ? 'text' : 'password'}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        required
+        className="password-input"
+        placeholder={placeholder}
+      />
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="toggle-password"
+      >
+        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      </button>
+    </div>
+  );
+};
+
+const ChangePassword = () => {
   const [passwords, setPasswords] = useState({
     currentPassword: '',
     newPassword: '',
-    confirmNewPassword: '',
+    confirmNewPassword: ''
   });
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Track loading state
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handlePasswordChange = (e) => {
     e.preventDefault();
 
-    // Validation for matching new passwords
     if (passwords.newPassword !== passwords.confirmNewPassword) {
       setError('New passwords do not match');
       setMessage(null);
@@ -26,11 +93,10 @@ export const ChangePassword = () => {
 
     setError(null);
     setMessage(null);
-    setIsLoading(true); // Start loading state
+    setIsLoading(true);
 
     const token = localStorage.getItem('token');
 
-    // Send request to change the password
     axios
       .post(
         'http://localhost:8080/api/account/change-password',
@@ -51,111 +117,94 @@ export const ChangePassword = () => {
       .catch((err) => {
         setError(err.response?.data?.message || 'Failed to change password');
         setMessage(null);
-        setIsLoading(false); // Stop loading state on error
+        setIsLoading(false);
       });
   };
 
   return (
-    <div>
+    <>
       <Header />
+      <div className="password-change-container">
+        <div className="form-card">
+          <div className="icon-container">
+            <Shield className="shield-icon" />
+          </div>
 
-      <div
-        style={{
-          maxWidth: '400px',
-          margin: 'auto',
-          padding: '20px',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          backgroundColor: '#f9f9f9',
-        }}
-      >
-        <h2>Change Password</h2>
-        <form
-          onSubmit={handlePasswordChange}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px',
-          }}
-        >
-          <div>
-            <label>
-              Current Password:
-              <input
-                type="password"
+          <h2 className="form-title">Change Password</h2>
+
+          <form onSubmit={handlePasswordChange} className="password-form">
+            <div className="form-group">
+              <label className="input-label">Current Password</label>
+              <PasswordInput
                 value={passwords.currentPassword}
-                onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
-                required
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  marginTop: '4px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                }}
+                onChange={(e) =>
+                  setPasswords({ ...passwords, currentPassword: e.target.value })
+                }
+                placeholder="Enter current password"
+                icon={Lock}
               />
-            </label>
-          </div>
-          <div>
-            <label>
-              New Password:
-              <input
-                type="password"
+            </div>
+
+            <div className="form-group">
+              <label className="input-label">New Password</label>
+              <PasswordInput
                 value={passwords.newPassword}
-                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-                required
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  marginTop: '4px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                }}
+                onChange={(e) =>
+                  setPasswords({ ...passwords, newPassword: e.target.value })
+                }
+                placeholder="Enter new password"
+                icon={Lock}
               />
-            </label>
-          </div>
-          <div>
-            <label>
-              Confirm New Password:
-              <input
-                type="password"
+              <PasswordStrengthIndicator password={passwords.newPassword} />
+            </div>
+
+            <div className="form-group">
+              <label className="input-label">Confirm New Password</label>
+              <PasswordInput
                 value={passwords.confirmNewPassword}
-                onChange={(e) => setPasswords({ ...passwords, confirmNewPassword: e.target.value })}
-                required
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  marginTop: '4px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                }}
+                onChange={(e) =>
+                  setPasswords({
+                    ...passwords,
+                    confirmNewPassword: e.target.value,
+                  })
+                }
+                placeholder="Confirm new password"
+                icon={Lock}
               />
-            </label>
-          </div>
+            </div>
 
-          {/* Display error message */}
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && (
+              <div className="message error">
+                <XCircle />
+                <p>{error}</p>
+              </div>
+            )}
 
-          {/* Display success message */}
-          {message && <p style={{ color: 'green' }}>{message}</p>}
+            {message && (
+              <div className="message success">
+                <CheckCircle />
+                <p>{message}</p>
+              </div>
+            )}
 
-          <button
-            type="submit"
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#007BFF',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-            }}
-            disabled={isLoading} // Disable button when loading
-          >
-            {isLoading ? 'Changing...' : 'Change Password'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`submit-button ${isLoading ? 'loading' : ''}`}
+            >
+              {isLoading ? (
+                <div className="loading-container">
+                  <div className="loading-spinner"></div>
+                  <span>Changing Password...</span>
+                </div>
+              ) : (
+                'Change Password'
+              )}
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

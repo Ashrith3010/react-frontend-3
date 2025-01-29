@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Checkbox,
+  Button,
+  FormControlLabel,
+  Paper,
+  CircularProgress,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import Header from "../dashboard/Header";
+import '../styles/account settings/accountsetting.css';
 
-// Account Settings Component
 export const AccountSettings = () => {
   const [userSettings, setUserSettings] = useState({
     notifications: true,
@@ -12,18 +23,17 @@ export const AccountSettings = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Replace useHistory with useNavigate
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
-  // Fetch user settings on component load
   useEffect(() => {
     const fetchUserSettings = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        // Check if the token exists
         if (!token) {
           setError("Token is missing. Please log in.");
-          navigate("/login");  // Redirect to login page using navigate
+          navigate("/login");
           return;
         }
 
@@ -34,16 +44,10 @@ export const AccountSettings = () => {
           }
         );
 
-        // Assuming the API response wraps settings in a `data` object
         setUserSettings(response.data.data || userSettings);
         setLoading(false);
       } catch (err) {
-        if (err.response && err.response.status === 403) {
-          setError("Access forbidden. Please log in again.");
-          navigate("/login"); // Redirect to login if token is invalid
-        } else {
-          setError("Failed to load account settings");
-        }
+        setError("Failed to load account settings");
         setLoading(false);
       }
     };
@@ -51,12 +55,10 @@ export const AccountSettings = () => {
     fetchUserSettings();
   }, [navigate]);
 
-  // Update settings when user clicks "Save Settings"
   const handleSettingsUpdate = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      // Check if the token exists
       if (!token) {
         setError("Token is missing. Please log in.");
         navigate("/login");
@@ -70,83 +72,85 @@ export const AccountSettings = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      alert("Settings updated successfully");
+
+      setSuccess(true);
     } catch (err) {
-      if (err.response && err.response.status === 403) {
-        setError("Access forbidden. Please log in again.");
-        navigate("/login");
-      } else {
-        setError("Failed to update settings");
-      }
+      setError("Failed to update settings");
     }
   };
 
-  if (loading) return <div>Loading settings...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading)
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
 
   return (
-    <div>
-      <Header />
-      <div className="account-settings-container">
-        <div className="sidebar">
+    <>
+    <Header/>
+    <br/>
+    <br/>
+    <br/>
+    <Box>
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>
+        <Alert severity="error">{error}</Alert>
+      </Snackbar>
+      <Snackbar open={success} autoHideDuration={6000} onClose={() => setSuccess(false)}>
+        <Alert severity="success">Settings updated successfully</Alert>
+      </Snackbar>
+      <Box className="account-settings-container">
+        <Box className="sidebar">
+          <Typography variant="h5">Settings</Typography>
           <ul>
             <li className="active">Account Settings</li>
             <li>
               <Link to="/change-password">Change Password</Link>
             </li>
           </ul>
-        </div>
-        <div className="content">
-          <h2>Account Settings</h2>
-          <div className="settings-item">
-            <label>
-              Enable Notifications
-              <input
-                type="checkbox"
+        </Box>
+        <Paper className="content" elevation={3}>
+          <Typography variant="h4" gutterBottom>Account Settings</Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={userSettings.notifications}
                 onChange={(e) =>
-                  setUserSettings({
-                    ...userSettings,
-                    notifications: e.target.checked,
-                  })
+                  setUserSettings({ ...userSettings, notifications: e.target.checked })
                 }
               />
-            </label>
-          </div>
-          <div className="settings-item">
-            <label>
-              Email Updates
-              <input
-                type="checkbox"
+            }
+            label="Enable Notifications"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={userSettings.emailUpdates}
                 onChange={(e) =>
-                  setUserSettings({
-                    ...userSettings,
-                    emailUpdates: e.target.checked,
-                  })
+                  setUserSettings({ ...userSettings, emailUpdates: e.target.checked })
                 }
               />
-            </label>
-          </div>
-          <div className="settings-item">
-            <label>
-              Privacy Mode
-              <input
-                type="checkbox"
+            }
+            label="Email Updates"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={userSettings.privacyMode}
                 onChange={(e) =>
-                  setUserSettings({
-                    ...userSettings,
-                    privacyMode: e.target.checked,
-                  })
+                  setUserSettings({ ...userSettings, privacyMode: e.target.checked })
                 }
               />
-            </label>
-          </div>
-          <button onClick={handleSettingsUpdate}>Save Settings</button>
-        </div>
-      </div>
-    </div>
+            }
+            label="Privacy Mode"
+          />
+          <Button variant="contained" color="primary" onClick={handleSettingsUpdate}>
+            Save Settings
+          </Button>
+        </Paper>
+      </Box>
+    </Box>
+    </>
   );
 };
 

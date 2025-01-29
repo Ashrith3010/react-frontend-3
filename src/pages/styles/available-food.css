@@ -1,1 +1,215 @@
-available-food.css.food-container {  padding: 20px;  max-width: 1200px;  margin: 0 auto;  font-family: 'Arial', sans-serif;}.food-header {  display: flex;  justify-content: space-between;  align-items: center;  margin-top: 50px;}.food-title {  font-size: 24px;  font-weight: bold;  color: #2a9d8f;}.filters {  display: flex;  align-items: center;}.city-filter {  padding: 5px 10px;  font-size: 14px;  border-radius: 5px;  border: 1px solid #ddd;  margin-left: 20px;}.notification {  margin: 10px 0;  padding: 10px;  border-radius: 5px;  font-weight: bold;}.notification-success {  background-color: #d4edda;  color: #155724;  border: 1px solid #c3e6cb;}.notification-error {  background-color: #f8d7da;  color: #721c24;  border: 1px solid #f5c6cb;}.loading-message,.error-message,.empty-message {  text-align: center;  font-size: 18px;  color: #333;  padding: 20px;}.food-grid {  display: grid;  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  gap: 20px;}.food-card {  background-color: #fff;  border-radius: 10px;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  padding: 20px;  transition: transform 0.3s, box-shadow 0.3s;  cursor: pointer;  position: relative;}.food-card:hover {  transform: translateY(-10px);  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);}.food-card-title {  font-size: 18px;  color: #e76f51;  margin-bottom: 10px;  transition: color 0.3s;}.food-card-info {  font-size: 14px;  color: #555;}.food-card-label {  font-weight: bold;  color: #2a9d8f;}.food-card-title:hover {  color: #264653;}.claim-button {  background-color: #2a9d8f;  color: #fff;  border: none;  padding: 8px 16px;  border-radius: 5px;  cursor: pointer;  font-size: 14px;  transition: background-color 0.3s;}.claim-button:hover {  background-color: #1f7769;}.claim-button:disabled {  background-color: #bbb;  cursor: not-allowed;}/* Animation */.food-card:hover::after {  content: '';  position: absolute;  width: 100%;  height: 100%;  top: 0;  left: 0;  border-radius: 10px;  background: rgba(42, 157, 143, 0.1);  animation: jumping 0.6s ease infinite alternate;}@keyframes jumping {  0% {    transform: translateY(0);  }  100% {    transform: translateY(-5px);  }}  
+/* Layout */
+.min-h-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom right, #f0f4ff, #cce7ff);
+  font-family: 'Roboto', sans-serif;
+}
+
+.content-wrapper {
+  padding: 2rem;
+}
+
+/* Header */
+.hero-banner {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.hero-title {
+  font-weight: 700;
+  color: #004aad;
+  margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+  font-weight: 400;
+  color: #5c5c5c;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Filters */
+.filter-container {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.filter-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.filter-control {
+  min-width: 200px;
+  flex: 1;
+}
+
+.filter-icon {
+  margin-right: 0.5rem;
+  color: #004aad;
+}
+
+.date-toggle .MuiToggleButton-root {
+  border: 1px solid #004aad;
+  color: #004aad;
+  text-transform: none;
+}
+
+.date-toggle .Mui-selected {
+  background-color: #004aad !important;
+  color: white !important;
+}
+
+.refresh-button {
+  color: #004aad;
+}
+
+.refresh-button.spinning {
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Donation Cards */
+.donations-grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.donation-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  width: 100%;
+  max-width: 280px;
+}
+
+.donation-card:hover {
+  transform: translateY(-5px);
+}
+
+.donation-content {
+  padding: 1rem;
+}
+
+.donation-title {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #004aad;
+}
+
+.icon-teal {
+  color: #00bcd4;
+  margin-right: 0.5rem;
+}
+
+.donation-details {
+  margin: 1rem 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  color: #5c5c5c;
+  margin-bottom: 0.5rem;
+}
+
+.expiry-chip {
+  margin: 1rem 0;
+}
+
+.full-width-chip {
+  width: 100%;
+}
+
+.claim-button {
+  background: #004aad;
+  color: white;
+  font-weight: bold;
+  text-transform: none;
+  margin-top: 1rem;
+}
+
+.claim-button.claimed {
+  background: #d3d3d3;
+  color: #5c5c5c;
+}
+
+/* Loading & Empty States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.empty-image {
+  max-width: 200px;
+  margin-bottom: 1rem;
+}
+
+.empty-title {
+  font-weight: bold;
+  color: #004aad;
+  margin-bottom: 0.5rem;
+}
+
+.empty-subtitle {
+  color: #5c5c5c;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+}
+
+th {
+  background-color: #004aad;
+  color: white;
+  padding: 1rem;
+  font-weight: 600;
+  text-align: left;
+  border: 1px solid #e0e0e0;
+}
+
+td {
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  color: #5c5c5c;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+tr:hover {
+  background-color: #f0f4ff;
+}

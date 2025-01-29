@@ -1,1 +1,289 @@
-General stylesbody, html {    height: 100%;    margin: 0;  }  .donation-manager {    height: 100%;    display: flex;    flex-direction: column;  }  .donation-form-page {    padding-top: 20px;    flex-grow: 1;    padding: 20px;    width:700px;  }  /* Header styling */  .donate-header {    position: fixed; /* Keeps the header fixed at the top */    top: 0;    left: 0;    width: 100%; /* Full width */    background-color: #ffffff; /* White background */    color: #333333; /* Text color */    padding: 15px 20px; /* Padding for spacing */    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */    z-index: 1000; /* Ensures it remains above other elements */    display: flex; /* Flex layout */    justify-content: flex-start; /* Align items to the left */    align-items: center; /* Vertically center the content */    gap: 20px; /* Add space between items */  }  .donate-header nav a {    margin: 0 15px; /* Space between links */    text-decoration: none; /* Remove underline */    color: #0077c2; /* Link color */    font-weight: bold;    font-size: 1rem;  }  .donate-header nav a:hover {    color: #005fa3; /* Slightly darker blue on hover */  }  .donate-header .logout {    background: #f8d7da; /* Light red background */    color: #721c24; /* Dark red text */    border: none;    padding: 8px 12px; /* Add padding for button spacing */    border-radius: 5px; /* Rounded edges */    font-size: 0.9rem;    cursor: pointer;    transition: background-color 0.3s ease;  }  .donate-header .logout:hover {    background: #f5c6cb; /* Darker red on hover */  }  /* Donation manager container */  .donation-manager {    margin-top: 80px; /* Prevent content from overlapping with the header */    padding: 30px;  }  /* Form title */  .donation-form-title {    margin: 20px 0;    font-size: 1.75rem;    text-align: center;    color: #0077c2;  }  /* Form styling */  .donation-form {    width: 100%;    margin: 0 auto;    display: flex;    flex-direction: column;    gap: 15px;  }  .donation-form input,  .donation-form textarea,  .donation-form button {    width: 100%;    padding: 10px;    font-size: 1rem;    border: 1px solid #ccc;    border-radius: 4px;  }  .donation-form button {    background-color: #0077c2;    color: #ffffff;    font-weight: bold;    border: none;    cursor: pointer;    transition: background-color 0.3s;  }  .donation-form button:hover {    background-color: #005fa3;  }  .notification {    padding: 10px;    margin-bottom: 15px;    border-radius: 4px;    font-size: 1rem;    display: flex;    align-items: center;    gap: 8px;  }  .notification.success {    background-color: #d4edda;    color: #155724;  }  .notification.error {    background-color: #f8d7da;    color: #721c24;  }  .notification-icon {    font-size: 1.5rem;  }  ul {    list-style-type: none;    margin: 0;    padding: 0;    border: 1px solid #ccc;    max-height: 200px;    overflow-y: auto;  }  ul li {    padding: 8px 10px;    cursor: pointer;  }  ul li:hover {    background-color: #f1f1f1;  }  /* Responsive styling */  @media (max-width: 768px) {    .donate-header {      padding: 10px 15px;    }    .donate-header nav a {      margin: 0 10px;      font-size: 0.9rem;    }    .donate-header .logout {      font-size: 0.8rem;      padding: 6px 10px;    }    .donation-form {      max-width: 100%;    }    .donation-form input,    .donation-form textarea,    .donation-form button {      font-size: 0.9rem;    }    .notification {      font-size: 0.9rem;    }    .notification-icon {      font-size: 1.2rem;    }  } 
+/* Base container */
+.fd-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f6f9fc 0%, #ecf2f9 100%);
+    padding: 2rem 1rem;
+  }
+  
+  .fd-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Card styling */
+  .fd-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+  
+  .fd-card-header {
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    color: white;
+  }
+  
+  .fd-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .fd-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+  }
+  
+  /* Form sections */
+  .fd-form {
+    padding: 2rem;
+  }
+  
+  .fd-form-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 12px;
+  }
+  
+  .fd-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  
+  /* Form groups */
+  .fd-form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .fd-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+  
+  .fd-icon {
+    width: 18px;
+    height: 18px;
+    color: #4a90e2;
+  }
+  
+  /* Input styling */
+  .fd-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  .fd-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    outline: none;
+  }
+  
+  /* Textarea styling */
+  .fd-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 100px;
+    transition: all 0.2s ease;
+  }
+  
+  .fd-textarea:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    outline: none;
+  }
+  
+  /* Slider styling */
+  .fd-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .fd-slider-input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  
+  .fd-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    background: #e2e8f0;
+    border-radius: 3px;
+    outline: none;
+  }
+  
+  .fd-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #4a90e2;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .fd-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+  
+  .fd-slider-value {
+    min-width: 40px;
+    padding: 0.25rem 0.5rem;
+    background: #4a90e2;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  /* Dropdown styling */
+  .fd-dropdown-container {
+    position: relative;
+  }
+  
+  .fd-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fd-dropdown-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .fd-dropdown-item:hover {
+    background: #f7fafc;
+    color: #4a90e2;
+  }
+  
+  /* Button styling */
+  .fd-submit-button {
+    width: 100%;
+    padding: 1rem;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .fd-submit-button:hover:not(:disabled) {
+    background: #357abd;
+    transform: translateY(-1px);
+  }
+  
+  .fd-submit-button:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+  }
+  
+  .fd-button-loading {
+    position: relative;
+    color: transparent;
+  }
+  
+  .fd-loading-text {
+    color: white;
+  }
+  
+  /* Notification styling */
+  .fd-notification {
+    margin: 1rem 2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: fd-slideIn 0.3s ease;
+  }
+  
+  .fd-notification-success {
+    background-color: #f0fdf4;
+    border: 2px solid #86efac;
+    color: #166534;
+  }
+  
+  .fd-notification-error {
+    background-color: #fef2f2;
+    border: 2px solid #fecaca;
+    color: #991b1b;
+  }
+  
+  .fd-notification-icon {
+    font-size: 1.25rem;
+  }
+  
+  .fd-notification-text {
+    margin: 0;
+  }
+  
+  /* Animations */
+  @keyframes fd-slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive design */
+  @media (max-width: 640px) {
+    .fd-container {
+      padding: 1rem;
+    }
+    
+    .fd-card-header {
+      padding: 1.5rem;
+    }
+    
+    .fd-title {
+      font-size: 1.5rem;
+    }
+    
+    .fd-form {
+      padding: 1rem;
+    }
+    
+    .fd-form-section {
+      padding: 1rem;
+    }
+  }
